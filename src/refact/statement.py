@@ -32,18 +32,18 @@ def statement(invoice: dict, plays: dict):
 
 
 def amount_for(perf, play):
-    this_amount = 0
+    result = 0
 
     match play["type"]:
         case "tragedy":
-            this_amount = 40000
+            result = 40000
             if perf["audience"] > 30:
-                this_amount += 1000 * (perf["audience"] - 30)
+                result += 1000 * (perf["audience"] - 30)
         case "comedy":
-            this_amount = 30000
+            result = 30000
             if perf["audience"] > 20:
-                this_amount += 10000 + 500 * (perf["audience"] - 20)
-            this_amount += 300 * perf["audience"]
+                result += 10000 + 500 * (perf["audience"] - 20)
+            result += 300 * perf["audience"]
         case _:
             raise Exception(f"unknown type: ${play['type']}")
-    return this_amount
+    return result
