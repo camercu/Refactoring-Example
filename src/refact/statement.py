@@ -31,19 +31,16 @@ def statement(invoice: dict, plays: dict):
         return locale.currency(amount, grouping=True)
 
     for perf in invoice["performances"]:
-        play = play_for(perf)
-        this_amount = amount_for(perf, play)
+        this_amount = amount_for(perf, play_for(perf))
 
         # add volume credits
         volume_credits += max(perf["audience"] - 30, 0)
         # add extra credit for every ten comedy attendees
-        if "comedy" == play["type"]:
+        if "comedy" == play_for(perf)["type"]:
             volume_credits += perf["audience"] // 5
 
         # print line for this order
-        result += (
-            f"  {play['name']}: {format(this_amount/100)} ({perf['audience']} seats)\n"
-        )
+        result += f"  {play_for(perf)['name']}: {format(this_amount/100)} ({perf['audience']} seats)\n"
         total_amount += this_amount
 
     result += f"Amount owed is {format(total_amount/100)}\n"
