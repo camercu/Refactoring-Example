@@ -9,10 +9,10 @@ def statement(invoice: dict, plays: dict):
     def play_for(performance):
         return plays[performance["playID"]]
 
-    def amount_for(performance, play):
+    def amount_for(performance):
         result = 0
 
-        match play["type"]:
+        match play_for(performance)["type"]:
             case "tragedy":
                 result = 40000
                 if performance["audience"] > 30:
@@ -23,7 +23,7 @@ def statement(invoice: dict, plays: dict):
                     result += 10000 + 500 * (performance["audience"] - 20)
                 result += 300 * performance["audience"]
             case _:
-                raise Exception(f"unknown type: ${play['type']}")
+                raise Exception(f"unknown type: ${play_for(performance)['type']}")
         return result
 
     def format(amount):
@@ -31,7 +31,7 @@ def statement(invoice: dict, plays: dict):
         return locale.currency(amount, grouping=True)
 
     for perf in invoice["performances"]:
-        this_amount = amount_for(perf, play_for(perf))
+        this_amount = amount_for(perf)
 
         # add volume credits
         volume_credits += max(perf["audience"] - 30, 0)
