@@ -6,6 +6,9 @@ def statement(invoice: dict, plays: dict):
     volume_credits = 0
     result = f"Statement for {invoice['customer']}\n"
 
+    def play_for(performance):
+        return plays[performance["playID"]]
+
     def amount_for(performance, play):
         result = 0
 
@@ -28,7 +31,7 @@ def statement(invoice: dict, plays: dict):
         return locale.currency(amount, grouping=True)
 
     for perf in invoice["performances"]:
-        play = plays[perf["playID"]]
+        play = play_for(perf)
         this_amount = amount_for(perf, play)
 
         # add volume credits
