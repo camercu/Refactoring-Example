@@ -33,7 +33,7 @@ def statement(invoice: dict, plays: dict):
             result += performance["audience"] // 5
         return result
 
-    def format(amount):
+    def usd(amount):
         locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
         return locale.currency(amount, grouping=True)
 
@@ -41,9 +41,9 @@ def statement(invoice: dict, plays: dict):
         volume_credits += volume_credits_for(perf)
 
         # print line for this order
-        result += f"  {play_for(perf)['name']}: {format(amount_for(perf)/100)} ({perf['audience']} seats)\n"
+        result += f"  {play_for(perf)['name']}: {usd(amount_for(perf)/100)} ({perf['audience']} seats)\n"
         total_amount += amount_for(perf)
 
-    result += f"Amount owed is {format(total_amount/100)}\n"
+    result += f"Amount owed is {usd(total_amount/100)}\n"
     result += f"You earned {volume_credits} credits\n"
     return result
