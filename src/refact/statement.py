@@ -4,6 +4,7 @@ import locale
 def statement(invoice: dict, plays: dict):
     statement_data = {}
     statement_data["customer"] = invoice["customer"]
+    statement_data["performances"] = invoice["performances"]
     return render_plaintext(statement_data, invoice, plays)
 
 
@@ -37,13 +38,13 @@ def render_plaintext(data: dict, invoice: dict, plays: dict):
 
     def total_volume_credits():
         result = 0
-        for perf in invoice["performances"]:
+        for perf in data["performances"]:
             result += volume_credits_for(perf)
         return result
 
     def total_amount():
         result = 0
-        for perf in invoice["performances"]:
+        for perf in data["performances"]:
             result += amount_for(perf)
         return result
 
@@ -52,7 +53,7 @@ def render_plaintext(data: dict, invoice: dict, plays: dict):
         return locale.currency(cents / 100, grouping=True)
 
     result = f"Statement for {data['customer']}\n"
-    for perf in invoice["performances"]:
+    for perf in data["performances"]:
         result += f"  {play_for(perf)['name']}: {usd(amount_for(perf))} ({perf['audience']} seats)\n"
     result += f"Amount owed is {usd(total_amount())}\n"
     result += f"You earned {total_volume_credits()} credits\n"
