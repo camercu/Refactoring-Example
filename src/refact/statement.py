@@ -3,6 +3,7 @@ import locale
 
 def statement(invoice: dict, plays: dict):
     statement_data = {}
+    statement_data["customer"] = invoice["customer"]
     return render_plaintext(statement_data, invoice, plays)
 
 
@@ -50,7 +51,7 @@ def render_plaintext(data: dict, invoice: dict, plays: dict):
         locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
         return locale.currency(cents / 100, grouping=True)
 
-    result = f"Statement for {invoice['customer']}\n"
+    result = f"Statement for {data['customer']}\n"
     for perf in invoice["performances"]:
         result += f"  {play_for(perf)['name']}: {usd(amount_for(perf))} ({perf['audience']} seats)\n"
     result += f"Amount owed is {usd(total_amount())}\n"
