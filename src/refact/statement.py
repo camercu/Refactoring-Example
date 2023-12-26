@@ -33,10 +33,10 @@ def statement(invoice: dict, plays: dict):
         return result
 
     def total_volume_credits():
-        volume_credits = 0
+        result = 0
         for perf in invoice["performances"]:
-            volume_credits += volume_credits_for(perf)
-        return volume_credits
+            result += volume_credits_for(perf)
+        return result
 
     def usd(cents):
         locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
