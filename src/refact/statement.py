@@ -2,7 +2,6 @@ import locale
 
 
 def statement(invoice: dict, plays: dict):
-    total_amount = 0
     result = f"Statement for {invoice['customer']}\n"
 
     def play_for(performance):
@@ -46,6 +45,7 @@ def statement(invoice: dict, plays: dict):
         # print line for this order
         result += f"  {play_for(perf)['name']}: {usd(amount_for(perf))} ({perf['audience']} seats)\n"
 
+    total_amount = 0
     for perf in invoice["performances"]:
         total_amount += amount_for(perf)
 
