@@ -31,10 +31,7 @@ def statement(invoice: dict, plays: dict):
         return result
 
     def total_volume_credits(data):
-        result = 0
-        for perf in data["performances"]:
-            result += perf["volume_credits"]
-        return result
+        return sum(p["volume_credits"] for p in data["performances"])
 
     def total_amount(data):
         return sum(p["amount"] for p in data["performances"])
