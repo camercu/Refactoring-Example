@@ -3,7 +3,6 @@ import locale
 
 def statement(invoice: dict, plays: dict):
     total_amount = 0
-    volume_credits = 0
     result = f"Statement for {invoice['customer']}\n"
 
     def play_for(performance):
@@ -42,6 +41,7 @@ def statement(invoice: dict, plays: dict):
         result += f"  {play_for(perf)['name']}: {usd(amount_for(perf))} ({perf['audience']} seats)\n"
         total_amount += amount_for(perf)
 
+    volume_credits = 0
     for perf in invoice["performances"]:
         volume_credits += volume_credits_for(perf)
 
