@@ -33,9 +33,9 @@ def statement(invoice: dict, plays: dict):
             result += performance["audience"] // 5
         return result
 
-    def usd(amount):
+    def usd(cents):
         locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
-        return locale.currency(amount, grouping=True)
+        return locale.currency(cents, grouping=True)
 
     for perf in invoice["performances"]:
         volume_credits += volume_credits_for(perf)
