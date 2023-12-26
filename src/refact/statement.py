@@ -2,6 +2,10 @@ import locale
 
 
 def statement(invoice: dict, plays: dict):
+    return render_plaintext(invoice, plays)
+
+
+def render_plaintext(invoice: dict, plays: dict):
     def play_for(performance):
         return plays[performance["playID"]]
 
