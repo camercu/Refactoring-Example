@@ -37,6 +37,12 @@ def statement(invoice: dict, plays: dict):
             result += volume_credits_for(perf)
         return result
 
+    def applesauce():
+        total_amount = 0
+        for perf in invoice["performances"]:
+            total_amount += amount_for(perf)
+        return total_amount
+
     def usd(cents):
         locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
         return locale.currency(cents / 100, grouping=True)
@@ -45,9 +51,7 @@ def statement(invoice: dict, plays: dict):
         # print line for this order
         result += f"  {play_for(perf)['name']}: {usd(amount_for(perf))} ({perf['audience']} seats)\n"
 
-    total_amount = 0
-    for perf in invoice["performances"]:
-        total_amount += amount_for(perf)
+    total_amount = applesauce()
 
     result += f"Amount owed is {usd(total_amount)}\n"
     result += f"You earned {total_volume_credits()} credits\n"
