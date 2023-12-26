@@ -36,6 +36,12 @@ def statement(invoice: dict, plays: dict):
             result += perf["volume_credits"]
         return result
 
+    def total_amount(data):
+        result = 0
+        for perf in data["performances"]:
+            result += perf["amount"]
+        return result
+
     def enrich_performance(performance):
         result = copy(performance)
         result["play"] = play_for(result)
@@ -49,16 +55,11 @@ def statement(invoice: dict, plays: dict):
         enrich_performance(p) for p in invoice["performances"]
     ]
     statement_data["total_volume_credits"] = total_volume_credits(statement_data)
+    statement_data["total_amount"] = total_amount(statement_data)
     return render_plaintext(statement_data)
 
 
 def render_plaintext(data: dict):
-    def total_amount():
-        result = 0
-        for perf in data["performances"]:
-            result += perf["amount"]
-        return result
-
     def usd(cents):
         locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
         return locale.currency(cents / 100, grouping=True)
@@ -66,6 +67,6 @@ def render_plaintext(data: dict):
     result = f"Statement for {data['customer']}\n"
     for perf in data["performances"]:
         result += f"  {perf['play']['name']}: {usd(perf['amount'])} ({perf['audience']} seats)\n"
-    result += f"Amount owed is {usd(total_amount())}\n"
+    result += f"Amount owed is {usd(data['total_amount'])}\n"
     result += f"You earned {data['total_volume_credits']} credits\n"
     return result
