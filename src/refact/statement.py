@@ -51,8 +51,6 @@ def statement(invoice: dict, plays: dict):
         # print line for this order
         result += f"  {play_for(perf)['name']}: {usd(amount_for(perf))} ({perf['audience']} seats)\n"
 
-    total_amount = applesauce()
-
-    result += f"Amount owed is {usd(total_amount)}\n"
+    result += f"Amount owed is {usd(applesauce())}\n"
     result += f"You earned {total_volume_credits()} credits\n"
     return result
