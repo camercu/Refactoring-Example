@@ -38,10 +38,10 @@ def statement(invoice: dict, plays: dict):
         return result
 
     def total_amount():
-        total_amount = 0
+        result = 0
         for perf in invoice["performances"]:
-            total_amount += amount_for(perf)
-        return total_amount
+            result += amount_for(perf)
+        return result
 
     def usd(cents):
         locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
