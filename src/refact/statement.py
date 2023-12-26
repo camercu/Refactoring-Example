@@ -11,6 +11,15 @@ def html_statement(invoice: dict, plays: dict):
     return render_html(create_statement_data(invoice, plays))
 
 
+def render_plaintext(data: dict):
+    result = f"Statement for {data['customer']}\n"
+    for perf in data["performances"]:
+        result += f"  {perf['play']['name']}: {usd(perf['amount'])} ({perf['audience']} seats)\n"
+    result += f"Amount owed is {usd(data['total_amount'])}\n"
+    result += f"You earned {data['total_volume_credits']} credits\n"
+    return result
+
+
 def render_html(data):
     result = f"<h1>Statement for {data['customer']}</h1>\n"
     result += "<table>\n"
@@ -21,15 +30,6 @@ def render_html(data):
     result += "</table>\n"
     result += f"<p>Amount owed is <em>${usd(data['totalAmount'])}</em></p>\n"
     result += f"<p>You earned <em>${data['totalVolumeCredits']}</em> credits</p>\n"
-    return result
-
-
-def render_plaintext(data: dict):
-    result = f"Statement for {data['customer']}\n"
-    for perf in data["performances"]:
-        result += f"  {perf['play']['name']}: {usd(perf['amount'])} ({perf['audience']} seats)\n"
-    result += f"Amount owed is {usd(data['total_amount'])}\n"
-    result += f"You earned {data['total_volume_credits']} credits\n"
     return result
 
 
