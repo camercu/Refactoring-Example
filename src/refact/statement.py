@@ -26,16 +26,20 @@ def statement(invoice: dict, plays: dict):
                 raise Exception(f"unknown type: ${play_for(performance)['type']}")
         return result
 
+    def volume_credits_for(perf):
+        volume_credits = 0
+        volume_credits += max(perf["audience"] - 30, 0)
+        # add extra credit for every ten comedy attendees
+        if "comedy" == play_for(perf)["type"]:
+            volume_credits += perf["audience"] // 5
+        return volume_credits
+
     def format(amount):
         locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
         return locale.currency(amount, grouping=True)
 
     for perf in invoice["performances"]:
-        # add volume credits
-        volume_credits += max(perf["audience"] - 30, 0)
-        # add extra credit for every ten comedy attendees
-        if "comedy" == play_for(perf)["type"]:
-            volume_credits += perf["audience"] // 5
+        volume_credits += volume_credits_for(perf)
 
         # print line for this order
         result += f"  {play_for(perf)['name']}: {format(amount_for(perf)/100)} ({perf['audience']} seats)\n"
