@@ -34,10 +34,10 @@ def statement(invoice: dict, plays: dict):
     statement_data["performances"] = [
         enrich_performance(p) for p in invoice["performances"]
     ]
-    return render_plaintext(statement_data, invoice, plays)
+    return render_plaintext(statement_data)
 
 
-def render_plaintext(data: dict, invoice: dict, plays: dict):
+def render_plaintext(data: dict):
     def volume_credits_for(performance):
         result = 0
         result += max(performance["audience"] - 30, 0)
