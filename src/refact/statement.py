@@ -3,8 +3,7 @@ from copy import copy
 
 
 def statement(invoice: dict, plays: dict):
-    statement_data = create_statement_data(invoice, plays)
-    return render_plaintext(statement_data)
+    return render_plaintext(create_statement_data(invoice, plays))
 
 
 def create_statement_data(invoice, plays):
