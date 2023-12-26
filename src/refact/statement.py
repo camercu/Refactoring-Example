@@ -3,6 +3,11 @@ from copy import copy
 
 
 def statement(invoice: dict, plays: dict):
+    statement_data = create_statement_data(invoice, plays)
+    return render_plaintext(statement_data)
+
+
+def create_statement_data(invoice, plays):
     def play_for(performance):
         return plays[performance["playID"]]
 
@@ -50,7 +55,7 @@ def statement(invoice: dict, plays: dict):
     ]
     statement_data["total_volume_credits"] = total_volume_credits(statement_data)
     statement_data["total_amount"] = total_amount(statement_data)
-    return render_plaintext(statement_data)
+    return statement_data
 
 
 def render_plaintext(data: dict):
