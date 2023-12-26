@@ -27,11 +27,11 @@ def statement(invoice: dict, plays: dict):
         return result
 
     def volume_credits_for(performance):
-        volume_credits = 0
-        volume_credits += max(performance["audience"] - 30, 0)
+        result = 0
+        result += max(performance["audience"] - 30, 0)
         if "comedy" == play_for(performance)["type"]:
-            volume_credits += performance["audience"] // 5
-        return volume_credits
+            result += performance["audience"] // 5
+        return result
 
     def format(amount):
         locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
