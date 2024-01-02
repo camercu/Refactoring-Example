@@ -41,9 +41,7 @@ class PerformanceCalculator:
 
         match self.play["type"]:
             case "tragedy":
-                result = 40000
-                if self.performance["audience"] > 30:
-                    result += 1000 * (self.performance["audience"] - 30)
+                raise Exception("Should use subclass")
             case "comedy":
                 result = 30000
                 if self.performance["audience"] > 20:
@@ -67,7 +65,12 @@ class ComedyCalculator(PerformanceCalculator):
 
 
 class TragedyCalculator(PerformanceCalculator):
-    pass
+    @property
+    def amount(self):
+        result = 40000
+        if self.performance["audience"] > 30:
+            result += 1000 * (self.performance["audience"] - 30)
+        return result
 
 
 def create_PerformanceCalculator(performance, play) -> PerformanceCalculator:
