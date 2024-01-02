@@ -36,9 +36,9 @@ def create_statement_data(invoice, plays):
         return sum(p["amount"] for p in data["performances"])
 
     def enrich_performance(performance):
-        calculator = PerformanceCalculator(performance)
+        calculator = PerformanceCalculator(performance, play_for(performance))
         result = copy(performance)
-        result["play"] = play_for(result)
+        result["play"] = calculator.play
         result["amount"] = amount_for(result)
         result["volume_credits"] = volume_credits_for(result)
         return result
@@ -54,5 +54,6 @@ def create_statement_data(invoice, plays):
 
 
 class PerformanceCalculator:
-    def __init__(self, performance) -> None:
+    def __init__(self, performance, play) -> None:
         self.performance = performance
+        self.play = play
