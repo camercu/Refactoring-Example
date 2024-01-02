@@ -1,4 +1,5 @@
 from copy import copy
+from urllib.parse import parse_qs
 
 
 def create_statement_data(invoice, plays):
@@ -27,10 +28,6 @@ def create_statement_data(invoice, plays):
     statement_data["total_volume_credits"] = total_volume_credits(statement_data)
     statement_data["total_amount"] = total_amount(statement_data)
     return statement_data
-
-
-def create_PerformanceCalculator(performance, play):
-    return PerformanceCalculator(performance, play)
 
 
 class PerformanceCalculator:
@@ -63,3 +60,21 @@ class PerformanceCalculator:
         if "comedy" == self.play["type"]:
             result += self.performance["audience"] // 5
         return result
+
+
+class ComedyCalculator(PerformanceCalculator):
+    pass
+
+
+class TragedyCalculator(PerformanceCalculator):
+    pass
+
+
+def create_PerformanceCalculator(performance, play) -> PerformanceCalculator:
+    match play["type"]:
+        case "comedy":
+            return ComedyCalculator(performance, play)
+        case "tragedy":
+            return TragedyCalculator(performance, play)
+        case _:
+            raise Exception(f"Unknown performance type: {play['type']}")
