@@ -37,19 +37,7 @@ class PerformanceCalculator:
 
     @property
     def amount(self):
-        result = 0
-
-        match self.play["type"]:
-            case "tragedy":
-                raise Exception("Should use subclass")
-            case "comedy":
-                result = 30000
-                if self.performance["audience"] > 20:
-                    result += 10000 + 500 * (self.performance["audience"] - 20)
-                result += 300 * self.performance["audience"]
-            case _:
-                raise Exception(f"unknown type: ${self.play['type']}")
-        return result
+        raise Exception("Subclass responsibility")
 
     @property
     def volume_credits(self):
@@ -61,7 +49,13 @@ class PerformanceCalculator:
 
 
 class ComedyCalculator(PerformanceCalculator):
-    pass
+    @property
+    def amount(self):
+        result = 30000
+        if self.performance["audience"] > 20:
+            result += 10000 + 500 * (self.performance["audience"] - 20)
+        result += 300 * self.performance["audience"]
+        return result
 
 
 class TragedyCalculator(PerformanceCalculator):
