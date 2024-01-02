@@ -1,5 +1,4 @@
 from copy import copy
-from urllib.parse import parse_qs
 
 
 def create_statement_data(invoice, plays):
