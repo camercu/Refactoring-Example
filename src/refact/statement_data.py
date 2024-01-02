@@ -5,23 +5,6 @@ def create_statement_data(invoice, plays):
     def play_for(performance):
         return plays[performance["playID"]]
 
-    def amount_for(performance):
-        result = 0
-
-        match performance["play"]["type"]:
-            case "tragedy":
-                result = 40000
-                if performance["audience"] > 30:
-                    result += 1000 * (performance["audience"] - 30)
-            case "comedy":
-                result = 30000
-                if performance["audience"] > 20:
-                    result += 10000 + 500 * (performance["audience"] - 20)
-                result += 300 * performance["audience"]
-            case _:
-                raise Exception(f"unknown type: ${performance['play']['type']}")
-        return result
-
     def volume_credits_for(performance):
         result = 0
         result += max(performance["audience"] - 30, 0)
@@ -39,7 +22,7 @@ def create_statement_data(invoice, plays):
         calculator = PerformanceCalculator(performance, play_for(performance))
         result = copy(performance)
         result["play"] = calculator.play
-        result["amount"] = amount_for(result)
+        result["amount"] = calculator.amount
         result["volume_credits"] = volume_credits_for(result)
         return result
 
@@ -57,3 +40,21 @@ class PerformanceCalculator:
     def __init__(self, performance, play) -> None:
         self.performance = performance
         self.play = play
+
+    @property
+    def amount(self):
+        result = 0
+
+        match self.play["type"]:
+            case "tragedy":
+                result = 40000
+                if self.performance["audience"] > 30:
+                    result += 1000 * (self.performance["audience"] - 30)
+            case "comedy":
+                result = 30000
+                if self.performance["audience"] > 20:
+                    result += 10000 + 500 * (self.performance["audience"] - 20)
+                result += 300 * self.performance["audience"]
+            case _:
+                raise Exception(f"unknown type: ${self.play['type']}")
+        return result
