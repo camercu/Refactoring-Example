@@ -41,11 +41,7 @@ class PerformanceCalculator:
 
     @property
     def volume_credits(self):
-        result = 0
-        result += max(self.performance["audience"] - 30, 0)
-        if "comedy" == self.play["type"]:
-            result += self.performance["audience"] // 5
-        return result
+        return max(self.performance["audience"] - 30, 0)
 
 
 class ComedyCalculator(PerformanceCalculator):
@@ -56,6 +52,10 @@ class ComedyCalculator(PerformanceCalculator):
             result += 10000 + 500 * (self.performance["audience"] - 20)
         result += 300 * self.performance["audience"]
         return result
+
+    @property
+    def volume_credits(self):
+        return super().volume_credits + self.performance["audience"] // 5
 
 
 class TragedyCalculator(PerformanceCalculator):
