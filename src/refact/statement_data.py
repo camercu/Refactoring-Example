@@ -72,5 +72,5 @@ def create_PerformanceCalculator(performance, play) -> PerformanceCalculator:
             return ComedyCalculator(performance, play)
         case "tragedy":
             return TragedyCalculator(performance, play)
-        case _:
-            raise Exception(f"Unknown performance type: {play['type']}")
+        case unknown:
+            raise Exception(f"Unknown performance type: {unknown}")
